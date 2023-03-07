@@ -3,7 +3,10 @@ package br.dio.collectionsjava.streamAPI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 public class StreamAPI {
@@ -44,6 +47,45 @@ public class StreamAPI {
         //aqui irá mostrar todos os valores alterados através do "foreach()":
         .forEach(System.out::println);
 
+        System.out.println("Pegue os números pares e maiores que 2 e coloque em uma lista: ");
+        //tudo "stream" +".map" + "filter" + "collect" dentro de uma List
+        List<Integer> listaParesMaioresQue2Integers = numerosAleatorios.stream()
+            .map(Integer::parseInt)
+            //filter seria tipo um filtro dos elementos que quero utilizar neste caso os elementos
+            //pares e maiores que 2 contidos:
+            .filter(new Predicate<Integer>() {
+                @Override
+                public boolean test(Integer i){
+                    if(i %2 == 0 && i>2) {
+                        return true;
+                    }
+                    return false;
+                }
+        }).collect(Collectors.toList());
+        
+        System.out.println(listaParesMaioresQue2Integers);
+
+        System.out.println("Mostre a media dos numeros: ");
+        numerosAleatorios.stream()
+        .mapToInt(Integer::parseInt)
+        .average()
+        .ifPresent(System.out::println);
+
+        System.out.println("Remova os Numeros Impares: ");
+        List<Integer> numerosAleatoriosInteger = numerosAleatorios.stream()
+        .map(Integer::parseInt)
+        .collect(Collectors.toList());
+
+        numerosAleatoriosInteger.removeIf(new Predicate<Integer>() {
+           @Override
+           public boolean test(Integer num){
+            if(num %2 !=0 ){
+                return true;
+            }
+            return false;
+           }             
+        });
+        System.out.println(numerosAleatoriosInteger);
 
     }
 }
